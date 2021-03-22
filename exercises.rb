@@ -1,35 +1,37 @@
-# frozen_string_literal: true
+# fname = "sample.txt"
+# somefile = File.open(fname, "w")
+# somefile.puts "Hello file!"
+# somefile.close
 
-class Viking
-  attr_accessor :name, :age, :health, :strength
+# file = File.open("sample.txt", "r")
+# contents = file.read
+# puts contents
 
-  @@starting_health
+# contents = File.open("sample.txt", "r") { |file| file.read }
+# puts contents
 
-  def initialize(name, health, age, strength)
-    @name = name
-    @health = health
-    @age = age
-    @strength = strength
-  end
+# file = File.open("sample.txt", 'r')
+# i = 0
+# while !file.eof?
+#   line = file.readline
+#   puts line
+# end
 
-  def self.create_warrior(name)
-    age = rand * 20 + 15
-    health = [age * 5, 120].min
-    strength = [age / 2, 10].min
-    Viking.new(name, health, age, strength)
-  end
+require 'open-uri'
+url = "http://ruby.bastardsbook.com/files/fundamentals/hamlet.txt"
+fname = "hamlet.txt"
 
-  def attack(enemy) end
+hamlet_speaking = false
 
-  def take_damage(damage)
-    self.health -= damage
-    shout('OUCH!')
-  end
+File.open("hamlet.txt", "r") do |file|
+  file.readlines.each do |line
 
-  def shout(str)
-    puts str
+    if hamlet_speaking == true && ( line.match(/^  [A-Z]/) || line.strip.empty? )
+      hamlet_speaking = false
+    end
+
+    hamlet_speaking = true if line.match("Ham\.")
+
+    puts line if hamlet_speaking == true
   end
 end
-
-sten = Viking.create_warrior('Sten')
-p sten
